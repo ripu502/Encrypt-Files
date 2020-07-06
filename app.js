@@ -79,6 +79,20 @@ app.post('/',
          */
     })
 
+app.get("/", async (req, res, next) => {
+  var params = { Bucket: awsConfig.bucket, Key: "test.enc" };
+  var re = await read(params);
+  const CIPHER_KEY = getCipherKey("don");
+  const readStream = bufferToStream(re.Body.slice(16));
+  const decipher = crypto.createDecipheriv(
+    ALGORITHM,
+    CIPHER_KEY,
+    re.Body.slice(0, 16)
+  );
+  const unzip = zlib.createUnzip();
+  readStream.pipe(decipher).pipe(unzip).pipe(res);
+});
+
 app.listen(process.env.PORT || 3000, () => {
     console.log('server is up at 3000');
 });
