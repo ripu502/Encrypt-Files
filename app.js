@@ -29,6 +29,7 @@ const s3 = new AWS.S3();
 function uploadFromStream(s3) {
     var pass = new stream.PassThrough();
     var params = { Bucket: awsConfig.bucket, Key: `${filename.enc} Make your file name here`, Body: pass };
+    // Callback is must
     s3.upload(params, function (err, data) {
         console.log(err, data);
     });
