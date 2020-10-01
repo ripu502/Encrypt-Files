@@ -4,7 +4,6 @@ const path = require('path');
 const zlib = require('zlib');
 
 const AppendInitVect = require('./appendInitVect');
-const { ALGORITHM, ENCRYPED_EXT } = require('./constants');
 const { getCipherKey } = require('./util');
 
 function encrypt({ file, password }) {
@@ -16,9 +15,9 @@ function encrypt({ file, password }) {
 
   const readStream = fs.createReadStream(file);
   const gzip = zlib.createGzip();
-  const cipher = crypto.createCipheriv(ALGORITHM, CIPHER_KEY, initVect);
+  const cipher = crypto.createCipheriv(process.env.ALGORITHM, process.env.CIPHER_KEY, initVect);
   const appendInitVect = new AppendInitVect(initVect);
-  const writeStream = fs.createWriteStream(path.join(file + ENCRYPED_EXT));
+  const writeStream = fs.createWriteStream(path.join(file + process.env.ENCRYPED_EXT));
 
   writeStream.on('close', () => {
     console.log('Encryption success!');

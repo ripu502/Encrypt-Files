@@ -3,11 +3,10 @@ const fs = require('fs');
 const path = require('path');
 const zlib = require('zlib');
 
-const { ALGORITHM, ENCRYPED_EXT, UNENCRYPED_EXT } = require('./constants');
 const { getCipherKey } = require('./util');
 
 function decrypt({ file, password }) {
-  const readPath = path.join(file + ENCRYPED_EXT);
+  const readPath = path.join(file + process.env.ENCRYPED_EXT);
 
   // First, get the initialization vector from the file.
   const readInitVect = fs.createReadStream(readPath, { end: 15 });
@@ -22,9 +21,9 @@ function decrypt({ file, password }) {
     const CIPHER_KEY = getCipherKey(password);
 
     const readStream = fs.createReadStream(readPath, { start: 16 });
-    const decipher = crypto.createDecipheriv(ALGORITHM, CIPHER_KEY, initVect);
+    const decipher = crypto.createDecipheriv(process.env.ALGORITHM, process.env.CIPHER_KEY, initVect);
     const unzip = zlib.createUnzip();
-    const writeStream = fs.createWriteStream(path.join(file + UNENCRYPED_EXT));
+    const writeStream = fs.createWriteStream(path.join(file + process.env.UNENCRYPED_EXT));
 
     writeStream.on('close', () => {
       console.log('Decryption success!');
