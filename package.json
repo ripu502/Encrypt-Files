@@ -20,7 +20,7 @@
   "homepage": "https://github.com/ripu502/Encrypt-Files#readme",
   "dependencies": {
     "aws-sdk": "^2.709.0",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "multer": "^1.4.2",
     "multer-s3": "^2.9.0",
     "nodemon": "^2.0.4"
